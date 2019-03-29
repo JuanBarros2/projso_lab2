@@ -97,14 +97,14 @@ int main() {
   // If the user just presses ENTER without any command, commands.size() is 0
   while(true){
     const vector<Command> commands = StreamParser().parse().commands();
-    commands_explanation(commands);
     
     if(commands[0].name() == "exit") break;
 
     int pid = fork();
-
+    
     if(pid == 0) {
-      printf("Executa filho");
+      execvp(commands[0].filename(), commands[0].argv());
+      _exit(0);
     } else if (pid == -1) {
       printf("Erro ao tentar criar o processo!");
       _exit(0);
