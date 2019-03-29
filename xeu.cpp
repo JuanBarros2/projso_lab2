@@ -4,6 +4,8 @@
 #include <vector>
 #include <cstdio>
 #include <sstream>
+#include <unistd.h>
+#include <sys/wait.h>
 
 using namespace xeu_utils;
 using namespace std;
@@ -93,9 +95,24 @@ int main() {
   //   ps aux | grep xeu
   // commands.size() would be 2: (ps aux) and (grep xeu)
   // If the user just presses ENTER without any command, commands.size() is 0
-  const vector<Command> commands = StreamParser().parse().commands();
+  while(true){
+    const vector<Command> commands = StreamParser().parse().commands();
+    commands_explanation(commands);
+    
+    if(commands[0].name() == "exit") break;
 
-  commands_explanation(commands);
+    int pid = fork();
+
+    if(pid == 0) {
+      printf("Executa filho");
+    } else if (pid == -1) {
+      printf("Erro ao tentar criar o processo!");
+      _exit(0);
+    } else {
+      wait(&pid);
+      printf("Desbloqueado");
+    }
+  }
 
   return 0;
 }
