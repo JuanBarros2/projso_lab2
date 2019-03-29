@@ -100,19 +100,18 @@ int main() {
     printf("\nxeu => ");
     const vector<Command> commands = StreamParser().parse().commands();
 
-    int sizeArg = commands[0].args().size();
     int backFork = 0;
       
     if(commands[0].name() == "exit") break;
     
-    if(sizeArg > 1 && commands[0].args()[sizeArg] == "&"){
+    if(strcmp(commands[0].argv()[0], "xeu_bg") == 0){
       backFork = 1;
     }
 
     int pid = fork();
 
     if(pid == 0) {
-      int result = execvp(commands[0].filename(), commands[0].argv());
+      int result = execvp(commands[0].argv()[backFork], &commands[0].argv()[backFork]);
       if(result == -1) {
         printf("Comando nao encontrado\n");
       }
@@ -121,9 +120,7 @@ int main() {
       printf("Erro ao tentar criar o processo!");
       _exit(1);
     } else {
-      int sizeArg = commands[0].args().size();
-
-      if(sizeArg > 1 && commands[0].args()[sizeArg] == "&"){
+      if(backFork){
         continue;
       }
 
