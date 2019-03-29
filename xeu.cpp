@@ -6,6 +6,7 @@
 #include <sstream>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <string.h>
 
 using namespace xeu_utils;
 using namespace std;
@@ -96,21 +97,38 @@ int main() {
   // commands.size() would be 2: (ps aux) and (grep xeu)
   // If the user just presses ENTER without any command, commands.size() is 0
   while(true){
-    printf("xeu => ");
+    printf("\nxeu => ");
     const vector<Command> commands = StreamParser().parse().commands();
-    
+
+    int sizeArg = commands[0].args().size();
+    int backFork = 0;
+      
     if(commands[0].name() == "exit") break;
+    
+    if(sizeArg > 1 && commands[0].args()[sizeArg] == "&"){
+      backFork = 1;
+    }
 
     int pid = fork();
 
     if(pid == 0) {
-      execvp(commands[0].filename(), commands[0].argv());
+      int result = execvp(commands[0].filename(), commands[0].argv());
+      if(result == -1) {
+        printf("Comando nao encontrado\n");
+      }
       _exit(0);
     } else if (pid == -1) {
       printf("Erro ao tentar criar o processo!");
-      _exit(0);
+      _exit(1);
     } else {
-      wait(&pid);
+      int sizeArg = commands[0].args().size();
+
+      if(sizeArg > 1 && commands[0].args()[sizeArg] == "&"){
+        continue;
+      }
+
+      int status = 0;
+      wait(&status);
     }
   }
 
