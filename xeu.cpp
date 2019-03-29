@@ -96,6 +96,7 @@ int main() {
   // commands.size() would be 2: (ps aux) and (grep xeu)
   // If the user just presses ENTER without any command, commands.size() is 0
   while(true){
+    printf("xeu => ");
     const vector<Command> commands = StreamParser().parse().commands();
     
     if(commands[0].name() == "exit") break;
