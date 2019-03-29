@@ -101,7 +101,7 @@ int main() {
     if(commands[0].name() == "exit") break;
 
     int pid = fork();
-    
+
     if(pid == 0) {
       execvp(commands[0].filename(), commands[0].argv());
       _exit(0);
@@ -110,7 +110,6 @@ int main() {
       _exit(0);
     } else {
       wait(&pid);
-      printf("Desbloqueado");
     }
   }
 
