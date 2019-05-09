@@ -1,28 +1,28 @@
 
 class SecondChance:
-  ALGORITHM_AGING_NBITS = 8
-  """How many bits to use for the Aging algorithm"""
-
   def __init__(self):
-    pass
+    self.pages = []
 
   def put(self, frameId):
-    """Allocates this frameId for some page"""
-    # Notice that in the physical memory we don't care about the pageId, we only
-    # care about the fact we were requested to allocate a certain frameId
-    pass
+    self.pages.append([frameId, 0])
 
   def evict(self):
-    """Deallocates a frame from the physical memory and returns its frameId"""
-    # You may assume the physical memory is FULL so we need space!
-    # Your code must decide which frame to return, according to the algorithm
-    pass
+    i = 0
+    length = len(self.pages)
+    while (self.pages[i][1] != 0):
+      self.put(self.pages.pop(i)[0])
+      i = i + 1 if i != length else 0
+    return self.pages.pop(i)[0]
 
   def clock(self):
-    """The amount of time we set for the clock has passed, so this is called"""
-    # Clear the reference bits (and/or whatever else you think you must do...)
-    pass
+    pass    
 
   def access(self, frameId, isWrite):
-    """A frameId was accessed for read/write (if write, isWrite=True)"""
-    pass
+    frameIndex = -1
+    for i in range(len(self.pages)):
+      if self.pages[i][0] == frameId:
+        frameIndex = i
+        self.pages[i][1] = 1
+      else:
+        self.pages[i][1] = 0
+    return self.pages[frameIndex]
