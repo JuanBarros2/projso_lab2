@@ -11,7 +11,7 @@ class PhysicalMemory:
   ALGORITHM_AGING_NBITS = 8
   """How many bits to use for the Aging algorithm"""
 
-  def __init__(self, algorithm, impl):
+  def __init__(self, algorithm):
     assert algorithm in {"fifo", "nru", "aging", "second-chance"}
     if algorithm == "fifo":
       from fifo import FIFO
@@ -28,7 +28,7 @@ class PhysicalMemory:
 
 
   def put(self, frameId):
-    return self.strategy.put()
+    return self.strategy.put(frameId)
 
   def evict(self):
     return self.strategy.evict()
@@ -37,4 +37,4 @@ class PhysicalMemory:
     return self.strategy.clock()
 
   def access(self, frameId, isWrite):
-    return self.strategy.access()
+    return self.strategy.access(frameId, isWrite)

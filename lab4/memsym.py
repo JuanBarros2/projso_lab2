@@ -1,6 +1,5 @@
 import sys
 from phymem import PhysicalMemory
-from fifo import FIFO
 
 class VirtualMemory:
     def __init__(self, npages, nframes, physicalMemory):
