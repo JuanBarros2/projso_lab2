@@ -11,18 +11,13 @@ class SecondChance:
     length = len(self.pages)
     while (self.pages[i][1] != 0):
       self.put(self.pages.pop(i)[0])
-      i = i + 1 if i != length else 0
+      if i == length:
+        i = 0
     return self.pages.pop(i)[0]
 
   def clock(self):
     pass    
 
   def access(self, frameId, isWrite):
-    frameIndex = -1
     for i in range(len(self.pages)):
-      if self.pages[i][0] == frameId:
-        frameIndex = i
-        self.pages[i][1] = 1
-      else:
-        self.pages[i][1] = 0
-    return self.pages[frameIndex]
+      self.pages[i][1] = 1 if self.pages[i][0] == frameId else self.pages[i][1] = 0
