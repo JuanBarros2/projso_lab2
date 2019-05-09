@@ -3,9 +3,8 @@ class SecondChance:
   ALGORITHM_AGING_NBITS = 8
   """How many bits to use for the Aging algorithm"""
 
-  def __init__(self, algorithm):
-    assert algorithm in {"second-chance"}
-    self.algorithm = algorithm
+  def __init__(self):
+    pass
 
   def put(self, frameId):
     """Allocates this frameId for some page"""
