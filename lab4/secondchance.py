@@ -19,5 +19,5 @@ class SecondChance:
     pass    
 
   def access(self, frameId, isWrite):
-    for i in range(len(self.pages)):
-      self.pages[i][1] = 1 if self.pages[i][0] == frameId else self.pages[i][1] = 0
+    for page in self.pages:
+      page[1] = 1 if page[0] == frameId else 0
