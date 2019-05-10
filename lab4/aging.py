@@ -4,25 +4,34 @@ class Aging:
   """How many bits to use for the Aging algorithm"""
 
   def __init__(self):
-    pass
+    self.pages = []
 
   def put(self, frameId):
     """Allocates this frameId for some page"""
-    # Notice that in the physical memory we don't care about the pageId, we only
-    # care about the fact we were requested to allocate a certain frameId
-    pass
+    self.pages.append([frameId, self.ALGORITHM_AGING_NBITS * '0', 0])
 
   def evict(self):
     """Deallocates a frame from the physical memory and returns its frameId"""
-    # You may assume the physical memory is FULL so we need space!
-    # Your code must decide which frame to return, according to the algorithm
-    pass
+    min_count = 256
+    min_idx = -1
+    for idx, page in enumerate(self.pages):
+      aux = int(page[1], 2)
+      if aux < min:
+        min_count = aux
+        min_idx = idx
+    return self.pages.pop(min_idx)[0]
+
+  def shift(self, page):
+    bits = str(page[2])
+    for i in range(1, 7):
+      bits += page[1][i]
+    page[1] = bits
 
   def clock(self):
     """The amount of time we set for the clock has passed, so this is called"""
-    # Clear the reference bits (and/or whatever else you think you must do...)
-    pass
+    for page in self.pages:
+      self.shift(page)
 
   def access(self, frameId, isWrite):
-    """A frameId was accessed for read/write (if write, isWrite=True)"""
-    pass
+    for page in self.pages:
+      if page[0] == frameId: page[2] = 1
