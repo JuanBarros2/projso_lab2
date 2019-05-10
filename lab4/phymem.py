@@ -12,7 +12,7 @@ class PhysicalMemory:
   """How many bits to use for the Aging algorithm"""
 
   def __init__(self, algorithm):
-    assert algorithm in {"fifo", "nru", "aging", "second-chance"}
+    assert algorithm in {"fifo", "nru", "aging", "second-chance", "lru"}
     if algorithm == "fifo":
       from fifo import FIFO
       self.strategy = FIFO()
@@ -25,6 +25,9 @@ class PhysicalMemory:
     elif algorithm == "second-chance":
       from secondchance import SecondChance
       self.strategy = SecondChance()
+    elif algorithm == "lru":
+      from lru import LRU
+      self.strategy = LRU()
 
 
   def put(self, frameId):
