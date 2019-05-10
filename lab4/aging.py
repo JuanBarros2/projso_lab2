@@ -26,6 +26,7 @@ class Aging:
     for i in range(1, 7):
       bits += page[1][i]
     page[1] = bits
+    page[2] = 0
 
   def clock(self):
     """The amount of time we set for the clock has passed, so this is called"""
